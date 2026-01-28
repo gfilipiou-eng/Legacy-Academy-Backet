@@ -25,11 +25,16 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 
+// Initial root route (για να μην εμφανίζεται "Cannot GET /")
+app.get("/", (req, res) => {
+  res.send("Legacy Academy API is running 🚀");
+});
+
 // Connect MongoDB
 mongoose
-  .connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB Connected ✅"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("MongoDB connection error:", err));
 
 // Start server
 const PORT = process.env.PORT || 5000;
